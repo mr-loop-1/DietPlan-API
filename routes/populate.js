@@ -6,21 +6,30 @@ const userModel = require('../models/userModel');
 const router = express.Router();
 
 
-router.post('/foodItem', (req, res) => {
+router.post('/fooditem', (req, res) => {
     const name = req.body.name;
     const {calories: calories, protein: protein, carb: carb, fat: fat, acceptedUnits: acceptedUnits, itemWeight} = req.body;
-    console.log(name, calories, protein, carb, fat);
+    // console.log(name, calories, protein, carb, fat);
 
-    const foodItem = new foodItemModel(
-        req.body
-    );
+    const foodItem = new foodItemModel({
+        name: name,
+        calories: calories,
+        protein: protein,
+        carb: carb,
+        fat: fat,
+        acceptedUnits: acceptedUnits,
+        itemWeight: itemWeight
+    });
 
     foodItem.save().then(result => {
         res.status(201).json(result);
     })
+    .catch((err) => {
+        console.log(err);
+    });
 });
 
-router.post('/mealPlan', async (req, res) => {
+router.post('/meal', async (req, res) => {
     const name = req.body.name;
     const category = req.body.category;
     const foodItems = req.body.foodItems;
@@ -29,18 +38,15 @@ router.post('/mealPlan', async (req, res) => {
 
     for(const item of foodItems) {
         const foundItem = await foodItemModel.findOne({name: item});
-        foodItemsWithId.push(foundItem._id);
+        if(foundItem) {
+            foodItemsWithId.push(foundItem._id);
+        }
+        else {
+            res.status(404).json({"msg": "Food Item not Found"});
+        }
     }
 
     // let foodItemsId = foodItems.map((item) => {
-    //     foodItemModel.findOne({name: item}).then(result => {
-    //         console.log('--------------------------------',result);
-    //         return result._id;
-    //     });
-        
-    // });
-
-    // console.log('------------------------------------------------------------');
 
     const meal = new mealModel({
         name: name,
@@ -51,6 +57,9 @@ router.post('/mealPlan', async (req, res) => {
     meal.save().then(results => {
         res.status(201).json(results);
     })
+    .catch((err) => {
+        console.log(err);
+    });
 });
 
 router.post('/user', async (req, res) => {
@@ -62,10 +71,15 @@ router.post('/user', async (req, res) => {
 
     for(const item of mealPlan) {
         const foundMeal = await mealModel.findOne({name: item.Meal});
-        mealPlanwithId.push({
-            date: item.date,
-            Meal: foundMeal._id
-        });
+        if(foundMeal) {
+            mealPlanwithId.push({
+                date: item.date,
+                Meal: foundMeal._id
+            });
+        }
+        else {
+            res.status(404).json({"msg": "Meal not Found"});
+        }
     }
 
     const user = new userModel({
@@ -77,6 +91,9 @@ router.post('/user', async (req, res) => {
     user.save().then(result => {
         res.status(201).json(result);
     })
+    .catch((err) => {
+        console.log(err);
+    });
 });
 
 
