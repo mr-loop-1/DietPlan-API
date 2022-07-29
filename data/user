@@ -1,0 +1,34 @@
+{
+    "name": "Abdul",
+    "calorieRequirement": 1800,
+    "mealPlan": [
+    {
+        "date": "2022-07-28",
+        "Meal": "Heavy Breakfast"
+    },
+    {
+        "date": "2022-07-28",
+        "Meal": "Normal Lunch"
+    },
+    {
+        "date": "2022-07-28",
+        "Meal": "Normal Dinner"
+    },
+    {
+        "date": "2022-07-29",
+        "Meal": "Light Breakfast"
+    },
+    {
+        "date": "2022-09-29",
+        "Meal": "Normal Lunch"
+    },
+    {
+        "date": "2022-09-29",
+        "Meal": "Snacks"
+    },
+    {
+        "date": "2022-09-29",
+        "Meal": "Normal Dinner"
+    }
+    ]
+}

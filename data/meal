@@ -1,0 +1,25 @@
+{
+    "name": "Light Breakfast",
+    "category": "Breakfast",
+    "foodItems": ["Milk", "Eggs"]
+},
+{
+    "name": "Heavy Breakfast",
+    "category": "Breakfast",
+    "foodItems": ["Milk", "Bread", "Ice Cream", "Cheese"]
+},
+{
+    "name": "Normal Lunch",
+    "category": "Lunch",
+    "foodItems": ["Chicken (Roast)", "Potatoes (Boiled)", "Apples", "Wheat Bran"]
+},
+{
+    "name": "Snacks",
+    "category": "Evening Snack",
+    "foodItems": ["Chocolate Biscuits"]
+},
+{
+    "name": "Normal Dinner",
+    "category": "Dinner",
+    "foodItems": ["Fish (eg. Cod)", "Bread", "Oranges", "Carrot (Boiled)"]
+}
