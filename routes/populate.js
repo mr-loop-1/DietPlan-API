@@ -1,0 +1,83 @@
+const express = require('express');
+const foodItemModel = require('../models/foodItemModel');
+const mealModel = require('../models/mealModel');
+const userModel = require('../models/userModel');
+
+const router = express.Router();
+
+
+router.post('/foodItem', (req, res) => {
+    const name = req.body.name;
+    const {calories: calories, protein: protein, carb: carb, fat: fat, acceptedUnits: acceptedUnits, itemWeight} = req.body;
+    console.log(name, calories, protein, carb, fat);
+
+    const foodItem = new foodItemModel(
+        req.body
+    );
+
+    foodItem.save().then(result => {
+        res.status(201).json(result);
+    })
+});
+
+router.post('/mealPlan', async (req, res) => {
+    const name = req.body.name;
+    const category = req.body.category;
+    const foodItems = req.body.foodItems;
+
+    const foodItemsWithId = [];
+
+    for(const item of foodItems) {
+        const foundItem = await foodItemModel.findOne({name: item});
+        foodItemsWithId.push(foundItem._id);
+    }
+
+    // let foodItemsId = foodItems.map((item) => {
+    //     foodItemModel.findOne({name: item}).then(result => {
+    //         console.log('--------------------------------',result);
+    //         return result._id;
+    //     });
+        
+    // });
+
+    // console.log('------------------------------------------------------------');
+
+    const meal = new mealModel({
+        name: name,
+        category: category,
+        foodItems: foodItemsWithId
+    });
+    
+    meal.save().then(results => {
+        res.status(201).json(results);
+    })
+});
+
+router.post('/user', async (req, res) => {
+    const name = req.body.name;
+    const calorieRequirement = req.body.calorieRequirement;
+    const mealPlan = req.body.mealPlan;
+
+    const mealPlanwithId = [];
+
+    for(const item of mealPlan) {
+        const foundMeal = await mealModel.findOne({name: item.Meal});
+        mealPlanwithId.push({
+            date: item.date,
+            Meal: foundMeal._id
+        });
+    }
+
+    const user = new userModel({
+        name: name,
+        calorieRequirement: calorieRequirement,
+        mealPlan: mealPlanwithId
+    });
+
+    user.save().then(result => {
+        res.status(201).json(result);
+    })
+});
+
+
+module.exports = router;
